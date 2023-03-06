@@ -1,0 +1,479 @@
+---
+title: "Week 5 Advanced Graphics Practical"
+output: html_document
+date: "`r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE,
+                      eval = TRUE)
+```
+
+# Instructions
+
+## Before you start
+
+This practical will be run using *posit.cloud* to avoid individual machine
+troubleshooting. You will find it helpful to have several resources close at
+hand: The lecture slides and [the ggplot2 Book](https://ggplot2-book.org/).
+The R help will be indispensable for completing this exercise, remember for any 
+`function()` you can type ?function to quickly pull up the help page.
+
+## The goal
+
+This practical will allow you to practice making basic data visualisations using
+R.
+
+## Learning objectives
+1. Use ggplot2 to make a density plot.
+2. Use ggplot2 to make a time series plot with annotations
+3. Add error bars to observations in ggplot2
+3. Use ggplot2 to plot multivariate data with a stacked bar plot
+4. Use ggplot2 to plot multivariate data with a heat map
+5. Use ggplot2 to plot multivariate data with a bubble chart
+6. Use ggplot2 to produce annotated maps
+
+## The way it's going to be run.
+
+Write your own `R`-code and run it. That is the best way to learn how this
+program works. Also, you have an excellent Teaching Assistant resource - ask
+them or the instructor the questions you have.
+
+::: {.alert .alert-info}
+The text in the blue box marked as **Task (number):** states what you need to do
+:::
+
+```{r}
+# The code in the window marked like this shows where you need to write your code
+#
+# 
+# If I ask you to assess the result or answer a question, you should write the 
+#text here as a comment starting with two hashes (##)
+```
+
+## Assessment.
+
+Submit your `R-markdown` file via BrightSpace - **The assessment is a Pass/Fail
+based on how you write and annotate the code - You need to show us you know what
+you are doing and NOT copying someone else's code.**
+
+# Tasks
+
+## Importing Danish Covid-19 data
+We will use the same Danish Covid-19 dataset that we used in the lecture. Import
+this dataset into a data frame called `covid`. Keep in mind that for this file:
+
+* Columns are separated by “;” (semicolon)
+* Decimals are commas
+* The first line contains header names
+
+::: {.alert .alert-info}
+**Task 1a:** Import the data from the file `Test_pos_over_time.csv` and place it
+in a data frame called `covid`. Then format the dates correctly.
+:::
+
+```{r}
+#Import the data
+covid <- -----(----)
+#Format the dates correctly
+covid$---- <- ----(----)
+```
+
+## Histograms and density plots
+
+Now that the Covid-19 dataset is loaded, imagine that you want to get an
+impression of the distribution for the number of new positive cases on any given
+day during the pandemic. You need a histogram and a density plot.
+
+::: {.alert .alert-info}
+**Task 1b:** Using ggplot2, draw a histogram of the variable `NewPositive` from the dataframe `covid`.
+:::
+
+```{r}
+#Draw a histogram
+----(----)
+----(----) + ----()
+```
+
+You will notice that most days have very few positive cases, but some
+days have many cases, making it difficult to observe a lot of variation
+in the cases. Change the y axis to a log10 scale using the function
+`scale_y_log10()` to better observe the high numers of positive tests
+per day. Reflect on how you might have distorted the data
+visualisation, taking principle 3 of making good plots into account
+from the lecture.
+
+::: {.alert .alert-info}
+**Task 1c:** Using ggplot2, draw a histogram of the variable
+`NewPositive` from the dataframe `covid` with a log10 scaled y axis.
+How might this have interfered with principles for good graphics?
+:::
+
+```{r}
+#Draw a histogram with a log10 y axis
+----(----) + ----() +
+  ----()
+#How might this log scalehave interfered with principles for good #graphics?
+##The log axis may mislead the viewer, as it looks like there was less
+##variation in positive test numbers than there actually was. However,
+##it also makes the few days with high test numbers more visible. So
+##there is a tradeoff here which may or may not make sense depending on
+##the purpose of the data visualisation.
+```
+
+Other than histograms, you have also learnt another way of showing data
+distributions called density plots. In ggplot2 this can be achieved with a 
+geom called `geom_density`. Make a density plot as an extra layer to
+your histogram, and change the colour of the line so that it stands
+out.
+
+::: {.alert .alert-info}
+**Task 1d:** Using ggplot2, draw a density plot of the variable
+`NewPositive` from the dataframe `covid`.
+:::
+
+```{r}
+#Draw a density plot of the variable `NewPositive` from the dataframe
+#`covid`.
+----(----) + ----()
+```
+
+## Annotating a time series
+
+Let's assume that we want to make a plot showing how much Covid-19 PCR testing was carried out in Denmark at different times in the pandemic.
+
+::: {.alert .alert-info}
+**Task 2a:** Using ggplot2, draw a time series plot with the date on the x axis
+and the number of tests carried out (variable name `Tested`) on the y axis. Give
+your plot axes helpful labels. Use a line plot.
+:::
+
+```{r}
+#Draw a time series plot with the date on the x axis and the number of tests
+#carried out (variable name `Tested`) on the y axis.
+----(----) + ----() +
+----(----)
+```
+
+Imagine you want to compare the Danish testing regime with that carried out in
+other countries, so you decide to plot the number of tests carried out divided
+by the total Danish population, which we can assume is 5.8 million for the whole
+period.
+
+::: {.alert .alert-info}
+**Task 2b:** Using ggplot2, draw a time series plot with the date on the x axis
+and the number of tests carried out per million people (variable name `Tested`)
+on the y axis. Give your plot axes helpful labels. Use a line plot.
+:::
+
+```{r}
+#Draw a time series plot with the date on the x axis and the number of tests
+#carried out (variable name `Tested`) on the y axis.
+----(----) + ----() +
+----(----)
+```
+
+Graphics like these can become very powerful if annotated with some explanatory
+data. For example, we can indicate certain important dates that occurred during
+the pandemic to help make sense of the testing numbers. You can add vertical
+lines to a plot using `geom_vline()`, and text using `geom_text()`.
+
+::: {.alert .alert-info}
+**Task 2c:** Using ggplot2, draw a time series plot with the date on the x axis
+and the number of tests carried out per million people (variable name `Tested`)
+on the y axis. Give your plot axes helpful labels, use a line plot. Also add
+transparent red vertical lines for Christmas Eve 2020 and 2021, and transparent
+blue vertical lines for New Year's Eve 2020 and 2021. Label these lines with
+blue and red text.
+:::
+
+```{r}
+#Plot Covid-19 tests per day per million people with Christmas and New Year's
+#labeled for 2020 and 2021 as described above.
+----(----) + ----() ...
+```
+
+Vertical lines are good for annotating specific points in time, but what about 
+if you want to annotate a longer period in time? A transparent rectangle could
+be useful here. Let's say you wanted to annotate the above plot with a coloured
+box in the background indicating the time from the first Danish school
+shutdown (11/3/2020) until primary schools were reopened physically (18/5/2020). 
+
+::: {.alert .alert-info}
+**Task 2d:** Using ggplot2, draw a time series plot with the date on the x axis
+and the number of tests carried out per million people (variable name `Tested`)
+on the y axis. Give your plot axes helpful labels, use a line plot. Also add
+a coloured box from 11/3/2020 to 18/5/2020 using `geom_rect`, and label it
+appropriately using `geom_text`. Note that the four aesthetics you will need to
+specify for `geom_rect()` are `xmin`, `xmax`, `ymin`, and `ymax`. The order of
+your geoms will be important.
+:::
+
+```{r}
+#Plot Covid-19 tests per day per million people with the first school shutdown
+#period marked with a rectangle as described above.
+----(----) +
+----(----) + 
+----() + ----(----) +
+  ----(----)
+```
+
+## For loop practice
+
+Imagine that you are a data scientist working for Sundhedsstyrelsen and have
+been asked to prepare the following six graphics: a plot of daily positive tests
+for each month from the first 6 months of 2022. You decide to produce these graphics
+using a for loop to save time. You make three vectors: one containing the start
+date for each month, one containing the finish date for each month,
+and one containing the name of each month. You then write a for loop that
+iterates over these vectors plotting each month one at a time, saving the plot
+as a pdf file using the `ggsave()` function. You will probably need to use the
+`paste0()` function to make the filename each time (to paste `.pdf` onto the end
+of the month name to give each plot file a unique name).
+
+::: {.alert .alert-info}
+**Task 3:** Using ggplot2 and a for loop, draw a time series plot for each of
+the first six months of 2022 with the date on the x axis and the number of
+positive tests on the y axis. Give your plot axes helpful labels and the month
+name as a title, use line plots. 
+:::
+
+```{r}
+#Make three vectors  containing the start date for each month, one containing
+#the finish date for each month, and one containing the name of each month.
+
+---- <- ----(c(----))
+---- <- ----(c(----))
+---- <- c(----)
+
+#Using ggplot2 and a for loop, draw a time series plot for each of
+#the first six months of 2022 with the date on the x axis and the number of
+#positive tests on the y axis.
+
+for (----) {
+----(----) + ----() + 
+    ----(----) +
+    ----(----) + ----(----)
+
+----(----(----))
+}
+```
+
+## Error bars
+
+Although error bars can hide the underlying distribution of your data, they are
+very common in spite of this shortcoming and it's important to know how to plot
+them onto your data when you're using ggplot2.
+
+For this section we will use a set of quantitative PCR data that looks at the 
+abundance of sulfate-reducing bacteria beneath the seabed. Each observation has 
+several variables including: `Depth` (cm below the seafloor, anegative number), 
+`Abundance` (number of dsrB genes), and `SD` (the standard deviation for each 
+measurement). First let's import the data from a file called `qPCR_example_dataset.tsv`.
+
+::: {.alert .alert-info}
+**Task 4a:** Import the qPCR dataset into a dataframe called `qpcr`. The file
+`qPCR_example_dataset.tsv` contains a dataset where:
+* Columns are separated by tabs
+* The first line is a header
+* Decimal points are points '.'
+:::
+
+```{r}
+#Import the qPCR dataset into a dataframe called `qpcr`
+---- <- ----(----)
+```
+
+Now we will plot the data. Plot the depth on the y axis and the abundance of
+dsrB genes per gram sediment (`Abundance` variable) on the x axis. The standard
+deviation (`SD`) of each data point should be plotted as an error bar to the
+left and right of each data point using the `geom_errorbar()` function. Use
+`geom_point()` and `geom_line(orientation = "y")` to show the data with points
+connected by a line ordered by the points orientation on the y axis.
+
+::: {.alert .alert-info}
+**Task 4b:** Plot the qPCR dataset as described above. Include axis labels.
+:::
+
+```{r}
+#Plot the qPCR dataset as described above.
+----(----) + ----() +
+  ----(----) +
+  ----(----) + ----(----) +
+  ----(----)
+```
+
+## Multivariate plotting
+
+First import the bedroom dust dataset that we used in the lecture. This dataset
+contains one column for each bacterial phylum found in a series of 9 bedrooms.
+Each row is an observation of one bedroom.
+
+::: {.alert .alert-info}
+**Task 5a:** Import the bedroom dust dataset into a dataframe called `br`.
+The file `bedroom_dust.tsv` contains a dataset where:
+* Columns are separated by tabs
+* The first line is a header
+* Decimal points are points '.'
+* The first column contains the row names
+:::
+
+```{r}
+#Import the bedroom dust dataset
+---- <- ----(-----)
+```
+
+Now to prepare this dataset for plotting, we need to
+(a) convert the row names to a column
+(b) convert it to "tidy" format to condense the 32 phylum variables down 
+to two variables, one for the phylum name and the other for the phylum
+abundance
+
+::: {.alert .alert-info}
+**Task 5b:** Convert the row names (accessible through the function `row.names()`)
+to a separate column and use the `pivot_longer()` function from the `tidyr` package 
+to condense the dataset to three columns: bedroom name, phylum name, and fractional 
+abundance of that phylum.
+:::
+
+```{r}
+#Make a column for the sample names in the bedroom dust dataframe
+---- <- ----(----)
+#Make a new dataframe with just three variables with `pivot_longer`.
+----(----)
+---- <- ----(----)
+```
+
+Let's plot the data using a stacked barplot.
+
+::: {.alert .alert-info}
+**Task 5c:** Using ggplot2, make a stacked bar plot where the bedroom name is
+mapped to the x axis variable, the abundance of each phylum is mapped to the y
+axis variable and the phylum is mapped to the fill colour of the bar. Make
+sure the bedroom names are legible. What problem do you immediately notice 
+with this graphic?
+:::
+
+```{r}
+#Make a stacked barplot to show the abundance of each phylum present in
+#each bedroom
+
+----(----) +
+  ----() +
+  ----(----)
+
+#What problem do you immediately notice with this graphic?
+##There are too many colours to determine which phylum is which.
+```
+
+We can make this plot more legible by combining some of the less abundant
+phyla together into a category we can call "Other".
+
+::: {.alert .alert-info}
+**Task 5d:** Using ggplot2, make a stacked bar plot where the bedroom name is
+mapped to the x axis variable, the abundance of each phylum is mapped to the y
+axis variable and the phylum is mapped to the fill colour of the bar. Plot
+only Actinobacteria, Firmicutes, and Proteobacteria and combine the rest into a
+category called "Other" using the `fct_other()` function from the `forcats`
+package. Why did we use `fct_other()` here and use `fct_lump_n()` for a similar
+operation during the lecture? Which of the 9 principles of good graphics is being
+violated here?
+:::
+
+```{r}
+#Lump the low abundance (not the top 5) phyla together
+----(----)
+---- <- ----(----)
+
+#Make a stacked bar plot like the last step but with low-abundance phyla
+#lumped together
+----(----) +
+  ----() +
+  ----(----)
+
+#Why did we use `fct_other()`/`geom_col()` here and use `fct_lump_n()`/`geom_bar()`
+#for a similar operation during the lecture?
+##fct_lump_n/geom_bar looks at the frequency of observations with an
+##observation (like we had in the invasive species dataset) while 
+##fct_other/geom_col works where the abundances are a variable in each
+##observation, rather than being calculated from the number of observations.
+
+#Which of the 9 principles of good graphics is being violated here?
+##1. Show your data - we are hiding those phyla that are in "Others" 
+```
+
+A good alternative to stacked bar plots is the heat map. Let's make one of these
+now. Note that you may have edited your dataframe to include the "Other" category
+in the last task, so you might need to re-import your data.
+
+::: {.alert .alert-info}
+**Task 5e:** Using ggplot2 and `geom_tile()`, make a heatmap where the phyla are
+on the y axis and the bedrooms are on the x axis. Use a sensible colour scale.
+:::
+
+```{r}
+---- <- ----(----)
+---- <- ----(----)
+---- <- ----(----)
+
+----(----) +
+  ----() + 
+  ----(----) +
+  ----()
+```
+
+Another alternative to stacked bar plots heat maps is a bubble chart.
+Let's make one of these now, but where we use both size and colour to indicate
+the abundance of each bacterial phylum. Make zero values absent.
+
+::: {.alert .alert-info}
+**Task 5f:** Using ggplot2 and `geom_point()`, make a bubble chart where the
+phyla are on the y axis and the bedrooms are on the x axis, with the size and
+colour of each point indicating the fractional abundance of each phylum. If a
+phylum is absent from a bedroom measurement (a zero value) then it should be
+absent from the plot too.
+:::
+
+```{r}
+---- <- ----[----]
+
+----(----) +
+  ----(----) + 
+  ----(----) +
+  ----()
+```
+
+## Annotating Maps
+
+As we covered in the lecture, ggplot2 can be made to plot maps and annotate them.
+
+::: {.alert .alert-info}
+**Task 6a:** Make a map of the world and draw a horizontal dotted red line on the
+Tropic of Capricorn (23.43628º South) using `geom_hline()`. Label it using `geom_text()`.
+:::
+
+```{r}
+----(----)
+----(----)
+
+---- <- ----(----)
+----(----) + ----() + ----(----) +
+  ----(----)
+```
+
+::: {.alert .alert-info}
+**Task 6b:** Make a map of Europe and draw a red rectangle approximately around Denmark using `geom_rect()`. Label it using `geom_text()`.
+:::
+
+```{r}
+----(----)
+----(----)
+
+----(----) + ----() + 
+  ----(----) +
+  ----(----) +
+  ----(----) +
+  ----(----)
+```
